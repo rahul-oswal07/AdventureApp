@@ -6,8 +6,8 @@ namespace AdventureApp.Services
     {
         Task<IEnumerable<Adventure>> GetAdventures();
 
-        bool CreateAdventure(Adventure adventure);
+        Task<bool> CreateAdventure(Adventure adventure);
 
-        Adventure GetAdventureById(int id);
+        Task<Adventure> GetAdventureById(int id);
     }
 }

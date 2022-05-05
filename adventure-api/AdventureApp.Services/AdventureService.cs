@@ -1,5 +1,6 @@
 ﻿using AdventureApp.DataAccess.Entities;
 using AdventureApp.DataAccess.Repositories;
+using System.Text.Json;
 
 namespace AdventureApp.Services
 {
@@ -74,19 +75,20 @@ namespace AdventureApp.Services
             this.adventureRepository = adventureRepository;
         }
 
-        public bool CreateAdventure(Adventure adventure)
+        public async Task<bool> CreateAdventure(Adventure adventure)
         {
-
+            await adventureRepository.AddAdventure(adventure);
             return true;
         }
 
-        public Adventure GetAdventureById(int id)
+        public async Task<Adventure> GetAdventureById(int id)
         {
-            return dougnutAdventure;
+            return await adventureRepository.GetAdventure(id);
         }
 
-        public async  Task<IEnumerable<Adventure>> GetAdventures()
-        {
+        public async Task<IEnumerable<Adventure>> GetAdventures()
+            {
+            var test = JsonSerializer.Serialize(dougnutAdventure);
             return await adventureRepository.GetAdventures();
         }
     }

@@ -15,7 +15,10 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddDbContext<AdventureDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("AdventureDatabase")));
 builder.Services.AddScoped<IAdventureRepository, AdventureRepository>();
 builder.Services.AddScoped<IAdventureService, AdventureService>();
-
+builder.Services.AddCors(p => p.AddPolicy("enableForAll", builder =>
+{
+    builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
+}));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -28,7 +31,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
-
+app.UseCors("enableForAll");
 app.MapControllers();
+app.UseRouting();
 
 app.Run();

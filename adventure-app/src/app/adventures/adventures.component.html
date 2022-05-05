@@ -1,0 +1,10 @@
+<div class="card mt-3" *ngFor="let adventure of adventures">
+    <div class="card-body">
+        <h5 class="card-title">{{adventure.name}}</h5>
+        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        <a href="#" class="btn btn-primary">Take this Adventure</a>
+    </div>
+</div>
+<div class="float-end">
+    <a href="#" class="btn btn-primary mt-3" routerLink="/create-adventure">Create new Adventure</a>
+</div>

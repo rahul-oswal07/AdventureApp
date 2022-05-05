@@ -24,4 +24,8 @@
     <ProjectReference Include="..\AdventureApp.Services\AdventureApp.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ViewModels\" />
+  </ItemGroup>
+
 </Project>
