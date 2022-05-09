@@ -6,12 +6,22 @@ namespace AdventureApp.DataAccess.Repositories
 {
     public class QuestionRepository : IQuestionRepository
     {
+        #region Private Variables
+
         private readonly AdventureDbContext adventureDbContext;
+
+        #endregion
+
+        #region Constructor
 
         public QuestionRepository(AdventureDbContext adventureDbContext)
         {
             this.adventureDbContext = adventureDbContext ?? throw new ArgumentNullException("adventureDbContext cannot be null");
         }
+
+        #endregion
+
+        #region Public Methods
 
         public async Task<QuestionDto> GetNextQuestion(int id, bool selectedValue)
         {
@@ -20,30 +30,21 @@ namespace AdventureApp.DataAccess.Repositories
                 .Include(item => item.Questions)
                 .FirstOrDefaultAsync();
 
-            try
+            var questionDto = result.Questions.Where(x => x.Value == selectedValue)
+            .Select(item => new QuestionDto()
             {
-                var test = result.Questions.Where(x => x.Value == selectedValue)
-               .Select(item => new QuestionDto()
-               {
-                   Id = item.Id,
-                   Name = item.Name,
-                   Questions = item.Questions?.Select(x => new QuestionDto() { Id = x.Id, Name = x.Name })
-               }).FirstOrDefault();
-                return test;
-            }
-
-            catch (Exception ex)
-            {
-                return null;
-            }
-
-
-
+                Id = item.Id,
+                Name = item.Name,
+                Questions = item.Questions?.Select(x => new QuestionDto() { Id = x.Id, Name = x.Name })
+            }).FirstOrDefault();
+            return questionDto;
         }
 
         public async Task<Question> GetQuestionById(int id)
         {
             return await adventureDbContext.Question.SingleOrDefaultAsync(x => x.Id == id);
         }
+
+        #endregion
     }
 }

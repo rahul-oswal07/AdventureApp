@@ -6,12 +6,22 @@ namespace AdventureApp.DataAccess.Repositories
 {
     public class AdventureRepository : IAdventureRepository
     {
+        #region Private Variables
+
         private readonly AdventureDbContext adventureDbContext;
+
+        #endregion
+
+        #region Constructor 
 
         public AdventureRepository(AdventureDbContext adventureDbContext)
         {
             this.adventureDbContext = adventureDbContext;
         }
+
+        #endregion
+
+        #region Public methods
 
         public async Task<Adventure> AddAdventure(Adventure adventure)
         {
@@ -27,17 +37,16 @@ namespace AdventureApp.DataAccess.Repositories
 
         public async Task<Adventure> GetAdventure(int adventureId)
         {
-            Adventure adventure =  await adventureDbContext.Adventure.Where(item => item.Id == adventureId)
+            Adventure adventure = await adventureDbContext.Adventure.Where(item => item.Id == adventureId)
                 .Include(item => item.RootQuestion)
                 .SingleOrDefaultAsync();
 
             return adventure;
-
         }
 
         public async Task<IEnumerable<AdventureDto>> GetAdventures()
         {
-            return await adventureDbContext.Adventure.Select(item =>new AdventureDto
+            return await adventureDbContext.Adventure.Select(item => new AdventureDto
             {
                 Id = item.Id,
                 Name = item.Name,
@@ -54,16 +63,11 @@ namespace AdventureApp.DataAccess.Repositories
                 AdventureId = adventuerId
             });
 
-            try
-            {
-                await adventureDbContext.SaveChangesAsync();
-
-            }
-            catch (Exception ex)
-            {
-
-            }
+            await adventureDbContext.SaveChangesAsync();
             return result.Entity;
         }
+
+        #endregion
+
     }
 }

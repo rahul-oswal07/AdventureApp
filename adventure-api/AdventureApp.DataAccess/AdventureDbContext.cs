@@ -9,7 +9,6 @@ namespace AdventureApp.DataAccess
         {
 
         }
-
         public DbSet<Adventure> Adventure { get; set; }
 
         public DbSet<Question> Question { get; set; }

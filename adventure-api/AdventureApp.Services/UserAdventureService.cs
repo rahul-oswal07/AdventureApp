@@ -1,12 +1,10 @@
-﻿using AdventureApp.DataAccess.Entities;
-using AdventureApp.DataAccess.Models;
+﻿using AdventureApp.DataAccess.Models;
 using AdventureApp.DataAccess.Repositories;
 
 namespace AdventureApp.Services
 {
     public class UserAdventureService : IUserAdventureService
     {
-
         #region Private Fields
 
         private readonly IUserAdventureRepository userAdventureRepository;

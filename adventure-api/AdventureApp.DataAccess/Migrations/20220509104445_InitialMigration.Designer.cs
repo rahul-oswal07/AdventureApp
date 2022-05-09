@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AdventureApp.DataAccess.Migrations
 {
     [DbContext(typeof(AdventureDbContext))]
-    [Migration("20220508182328_Initial2")]
-    partial class Initial2
+    [Migration("20220509104445_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
