@@ -1,5 +1,4 @@
-﻿using AdventureApp.DataAccess.Entities;
-using AdventureApp.DataAccess.Models;
+﻿using AdventureApp.DataAccess.Models;
 
 namespace AdventureApp.Services
 {
@@ -7,6 +6,8 @@ namespace AdventureApp.Services
     {
         Task<IEnumerable<UserAdventureDto>> GetUserAdventures(int userId);
 
-        Task<UserAdventureDto> GetUserAdventure(int userId, int adventureId);
+        Task<UserAdventureDto> GetUserAdventure(int id);
+
+        Task<UserAdventureDto> SaveUserAdventure(int userId, int adventuerId, int questionId);
     }
 }

@@ -8,11 +8,11 @@ export class UserAdventureService {
     constructor(private http: HttpClient) {}
 
     public getAllUserAdventures(userId: number) {
-        return this.http.get<UserAdventure[]>( environment.apiEndPoint +'/useradventures/' + userId);
+        return this.http.get<UserAdventure[]>( environment.apiEndPoint +'/useradventures/user/' + userId);
       }
 
-      public getAdventure(userId:number, adventureId:number) {
-        return this.http.get<UserAdventure>( environment.apiEndPoint +'/useradventures/'+ userId + '/'+ adventureId );
+      public getUserAdventure(userAdventureId:number) {
+        return this.http.get<UserAdventure>( environment.apiEndPoint +'/useradventures/'+ userAdventureId );
       }
 
 }

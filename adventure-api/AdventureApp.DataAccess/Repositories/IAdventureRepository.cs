@@ -6,10 +6,10 @@ namespace AdventureApp.DataAccess.Repositories
     public interface IAdventureRepository
     {
         Task<IEnumerable<AdventureDto>> GetAdventures();
-        Task<Adventure> GetAdventure(int adventureId);
-        Task<Adventure> AddAdventure(Adventure adventure);
-        void DeleteAdventure(int adventureId);
 
-        Task<UserAdventure> SaveUserAdventure(int userId, int adventuerId, int questionId);
+        Task<Adventure> GetAdventure(int adventureId);
+        
+        Task<Adventure> AddAdventure(Adventure adventure);
+
     }
 }

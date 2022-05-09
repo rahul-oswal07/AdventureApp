@@ -30,11 +30,6 @@ namespace AdventureApp.DataAccess.Repositories
             return result.Entity;
         }
 
-        public void DeleteAdventure(int adventureId)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<Adventure> GetAdventure(int adventureId)
         {
             Adventure adventure = await adventureDbContext.Adventure.Where(item => item.Id == adventureId)
@@ -54,18 +49,7 @@ namespace AdventureApp.DataAccess.Repositories
             }).ToListAsync();
         }
 
-        public async Task<UserAdventure> SaveUserAdventure(int userId, int adventuerId, int questionId)
-        {
-            var result = await adventureDbContext.UserAdventure.AddAsync(new UserAdventure
-            {
-                UserId = userId,
-                QuestionId = questionId,
-                AdventureId = adventuerId
-            });
-
-            await adventureDbContext.SaveChangesAsync();
-            return result.Entity;
-        }
+        
 
         #endregion
 

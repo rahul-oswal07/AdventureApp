@@ -13,7 +13,7 @@ import { UserAdventureService } from '../user-adventure.service';
 })
 export class UserAdventureComponent implements OnInit {
   userAdventure: UserAdventure;
-  adventureId: number;
+  userAdventureId: number;
   questions: Question[]
 
 
@@ -21,13 +21,13 @@ export class UserAdventureComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
-      this.adventureId = parseInt(params.get('id'));
-      this.loadUserAdventure(environment.userId, this.adventureId);
+      this.userAdventureId = parseInt(params.get('id'));
+      this.loadUserAdventure(this.userAdventureId);
     });
   }
 
-  loadUserAdventure(userId: number, adventureId: number):void {
-    this.userAdventureService.getAdventure(userId, adventureId).subscribe((useradventure) => {
+  loadUserAdventure(userAdventureId: number):void {
+    this.userAdventureService.getUserAdventure(userAdventureId).subscribe((useradventure) => {
       this.userAdventure = useradventure;
       this.questions = useradventure.question.questions;
     });

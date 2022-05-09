@@ -26,17 +26,25 @@ namespace AdventureApp.Web.Controllers
         #region Action Methods
 
         [HttpGet]
-        [Route("{userId}")]
-        public async Task<IEnumerable<UserAdventureDto>> Get(int userId)
+        [Route("user/{userId}")]
+        public async Task<IEnumerable<UserAdventureDto>> GetAll(int userId)
         {
             return await userAdventureService.GetUserAdventures(userId);
         }
 
         [HttpGet]
-        [Route("{userId}/{adventureId}")]
-        public async Task<UserAdventureDto> Get(int userId, int adventureId)
+        [Route("{id}")]
+        public async Task<UserAdventureDto> Get(int id)
         {
-            return await userAdventureService.GetUserAdventure(userId, adventureId);
+            return await userAdventureService.GetUserAdventure(id);
+        }
+
+        [HttpPost]
+        [Route("create")]
+        public async Task<UserAdventureDto> SaveUserAdventure(SaveAdventureParameter parameter)
+        {
+            UserAdventureDto result = await userAdventureService.SaveUserAdventure(parameter.UserId, parameter.AdventureId, parameter.QuestionId);
+            return result;
         }
 
         #endregion

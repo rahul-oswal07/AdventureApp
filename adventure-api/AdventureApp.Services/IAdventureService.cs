@@ -11,6 +11,5 @@ namespace AdventureApp.Services
 
         Task<Adventure> GetAdventureById(int id);
 
-        Task<UserAdventure> SaveUserAdventure(int userId, int adventuerId, int questionId);
     }
 }

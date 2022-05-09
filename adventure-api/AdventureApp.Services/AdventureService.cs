@@ -43,11 +43,6 @@ namespace AdventureApp.Services
             return await adventureRepository.GetAdventures();
         }
 
-        public async Task<UserAdventure> SaveUserAdventure(int userId, int adventuerId, int questionId)
-        {
-            return await adventureRepository.SaveUserAdventure(userId, adventuerId, questionId);
-        }
-
         #endregion
     }
 }

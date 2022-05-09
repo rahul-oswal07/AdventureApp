@@ -31,7 +31,7 @@ export class AdventureService {
         const body=JSON.stringify({
           questionId: questionId, userId: userId, adventureId:adventureId
         });
-        return this.http.post<any>( environment.apiEndPoint +'/adventures/saveUserAdventure',body,{'headers':headers});
+        return this.http.post<any>( environment.apiEndPoint +'/userAdventures/create',body,{'headers':headers});
       }
 
 }

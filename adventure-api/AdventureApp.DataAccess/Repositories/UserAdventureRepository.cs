@@ -26,10 +26,10 @@ namespace AdventureApp.DataAccess.Repositories
 
         #region Public Methods
 
-        public async Task<UserAdventureDto> GetUserAdventure(int userId, int adventureId)
+        public async Task<UserAdventureDto> GetUserAdventure(int id)
         {
             UserAdventure userAdventure = adventureDbContext.UserAdventure
-                .Where(item => item.UserId == userId && item.AdventureId == adventureId)
+                .Where(item => item.Id == id)
                 .Include(item => item.Adventure)
                 .FirstOrDefault();
 
@@ -59,9 +59,23 @@ namespace AdventureApp.DataAccess.Repositories
                 .Where(item => item.UserId == userId)
                 .Select(item => new UserAdventureDto
                 {
+                    Id = item.Id,
                     AdventureId = item.AdventureId,
                     Name = item.Adventure.Name
                 }).ToListAsync();
+        }
+
+        public async Task<UserAdventureDto> SaveUserAdventure(int userId, int adventuerId, int questionId)
+        {
+            var result = await adventureDbContext.UserAdventure.AddAsync(new UserAdventure
+            {
+                UserId = userId,
+                QuestionId = questionId,
+                AdventureId = adventuerId
+            });
+
+            int a = await adventureDbContext.SaveChangesAsync();
+            return new UserAdventureDto { Id = result.Entity.Id, AdventureId = result.Entity.Id };
         }
 
         #endregion

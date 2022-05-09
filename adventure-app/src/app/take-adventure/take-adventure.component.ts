@@ -36,12 +36,12 @@ export class TakeAdventureComponent implements OnInit {
         this.question = question;
         if(this.question == null) {
           this.adventureService.saveUserQuestion(questionId,environment.userId,this.adventureId).subscribe(item=>{
-            this.selectedValue =null;
+            this.selectedValue = null;
             this.router.navigate(['']);
           })
         }
       });
-    },500)
+    },200)
     
   }
 
