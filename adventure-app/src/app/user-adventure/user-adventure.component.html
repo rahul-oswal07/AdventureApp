@@ -1,0 +1,7 @@
+<h1>{{userAdventure.name}}</h1>
+<h2>{{userAdventure.question.name}}</h2>
+    <div class="row">
+        <div class="col" *ngFor="let question of userAdventure.question.questions">
+            <app-sub-questions  [question] = "question"></app-sub-questions>
+        </div>
+    </div>

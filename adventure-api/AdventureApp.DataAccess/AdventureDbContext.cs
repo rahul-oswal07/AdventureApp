@@ -14,8 +14,17 @@ namespace AdventureApp.DataAccess
 
         public DbSet<Question> Question { get; set; }
 
+        public DbSet<User> User { get; set; }
+
+        public DbSet<UserAdventure> UserAdventure { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<Question>()
+                .HasMany(question => question.Questions)
+                .WithOne(question => question.ParentQuestion)
+                .HasForeignKey(question => question.ParentQuestionId);
+
             base.OnModelCreating(builder);
         }
     }

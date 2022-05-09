@@ -1,0 +1,11 @@
+<div class="margin-left-4">
+       <div class="form-group" *ngFor="let question of questions ">
+              <label *ngIf ="question.value" for="rootQuestion">YES</label>
+              <label *ngIf ="!question.value" for="rootQuestion">NO</label>
+              <input type="text" class="form-control"
+                     [(ngModel)]="question.name" name="name">
+              <button type="button" class="btn btn-link btn-sm" (click)="addQuestion(question)">Add Question</button>
+              <app-questions *ngIf="question.questions"[questions] ="question.questions">
+              </app-questions>
+       </div>
+</div>

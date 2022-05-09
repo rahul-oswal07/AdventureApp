@@ -1,6 +1,5 @@
 using AdventureApp.DataAccess;
-using AdventureApp.DataAccess.Repositories;
-using AdventureApp.Services;
+using AdventureApp.Web;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,12 +12,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddDbContext<AdventureDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("AdventureDatabase")));
-builder.Services.AddScoped<IAdventureRepository, AdventureRepository>();
-builder.Services.AddScoped<IAdventureService, AdventureService>();
-builder.Services.AddCors(p => p.AddPolicy("enableForAll", builder =>
-{
-    builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
-}));
+
+builder.Services.ConfigureCors();
+builder.Services.ConfigureRepositories();
+builder.Services.ConfigureServices();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

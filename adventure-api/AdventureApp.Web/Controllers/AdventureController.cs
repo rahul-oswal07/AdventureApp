@@ -37,9 +37,17 @@ namespace AdventureApp.Web.Controllers
 
         [HttpPost]
         [Route("create")]
-        public async Task<IActionResult> GetAdventureById(Adventure adventure)
+        public async Task<IActionResult> CreateAdventure(Adventure adventure)
         {
             bool result = await _adventureService.CreateAdventure(adventure);
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("saveUserAdventure")]
+        public async Task<IActionResult> SaveUserAdventure(SaveAdventureParameter parameter)
+        {
+            UserAdventure result = await _adventureService.SaveUserAdventure(parameter.UserId, parameter.AdventureId, parameter.QuestionId);
             return Ok(result);
         }
     }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Adventure } from '../adventure.model';
 import { AdventureService } from '../adventure.service';
 
@@ -10,9 +11,12 @@ import { AdventureService } from '../adventure.service';
 export class AdventuresComponent implements OnInit {
   adventures: Adventure[];
 
-  constructor(private adventureService: AdventureService) { }
+  constructor(private adventureService: AdventureService) {
+
+   }
 
   ngOnInit(): void {
+   
     this.loadAllAdventures();
   }
 

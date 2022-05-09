@@ -1,0 +1,21 @@
+<div>
+    <h1>
+        {{adventure.name}}
+    </h1>
+    <div *ngIf="question">
+        <div class="form-group">
+            <label>{{question.name}}</label>    
+            <div class="form-control">
+                <label class="form-check-label">
+                    <input class="radio-inline" [(ngModel)]="selectedValue" type="radio" name="yesNoQuesion"  value="true" (click)="nextQuestion()">
+                    Yes
+                </label>
+                <label class="form-check-label">
+                <input class="form-check-input" [(ngModel)]="selectedValue" type="radio" name="yesNoQuesion"  value="false" (click)="nextQuestion()">
+                    No
+                </label>
+            </div>
+        </div>
+       
+    </div>
+</div>

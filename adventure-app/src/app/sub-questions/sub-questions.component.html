@@ -1,0 +1,8 @@
+<h5 [ngClass]="{'bg-success': question.isSelected === true}" >{{question.name}}</h5>
+<br>
+<div class="row">
+    <div class="col" *ngFor="let question of question.questions">
+        <app-sub-questions [question] = "question">
+        </app-sub-questions>
+    </div>
+</div>

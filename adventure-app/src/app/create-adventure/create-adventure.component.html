@@ -1,0 +1,16 @@
+<form (ngSubmit)="onSubmit()" #adventureForm="ngForm">
+    <div class="form-group">
+        <label for="name">Enter the adventure Name</label>
+        <input type="text" id= "name" required name="name" [(ngModel)]="adventure.name" class = "form-control"  #name="ngModel">
+    </div>
+    <div class="form-group">
+        <label for="rootQuestion">Enter first Question</label>
+        <input type="text" class="form-control" id="rootQuestion"
+               [(ngModel)]="adventure.rootQuestion.name" name="rootQuestion">
+      </div>
+      <button type="button" class="btn btn-link btn-sm" (click)="addQuestion()">Add Question</button>
+      <app-questions *ngIf="adventure.rootQuestion.questions"[questions] ="adventure.rootQuestion.questions">
+      </app-questions>
+      <button type="submit" class="btn btn-success" [disabled]="!adventureForm.form.valid">Submit</button>
+      {{adventure | json}}
+</form>

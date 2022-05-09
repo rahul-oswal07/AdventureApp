@@ -1,6 +1,6 @@
 ﻿using AdventureApp.DataAccess.Entities;
+using AdventureApp.DataAccess.Models;
 using AdventureApp.DataAccess.Repositories;
-using System.Text.Json;
 
 namespace AdventureApp.Services
 {
@@ -69,7 +69,43 @@ namespace AdventureApp.Services
                     }
             }
         };
+
+        private Adventure testAdventure = new Adventure()
+        {
+            Name = "Test Adventure",
+            RootQuestion = new Question()
+            {
+                Name = "Question level 1",
+                Questions = new List<Question>
+                {
+                    new Question()
+                    {
+                        Name = "Question Yes level 1",
+                        Value = true,
+                        Questions= new List<Question>
+                        {
+                            new Question()
+                            {
+                                 Name = "Question Yes level 2",
+                                 Value = true,
+                            },
+                            new Question()
+                            {
+                                 Name = "Question No level 2",
+                                 Value = false,
+                            }
+                        }
+                    },
+                    new Question()
+                    {
+                        Name = "Question No level 2",
+                        Value = false
+                    }
+                }
+            }
+        };
         private readonly IAdventureRepository adventureRepository;
+
         public AdventureService(IAdventureRepository adventureRepository)
         {
             this.adventureRepository = adventureRepository;
@@ -77,6 +113,10 @@ namespace AdventureApp.Services
 
         public async Task<bool> CreateAdventure(Adventure adventure)
         {
+            if (adventure == null)
+            {
+                throw new ArgumentNullException("Adventure cannot be null");
+            }
             await adventureRepository.AddAdventure(adventure);
             return true;
         }
@@ -86,10 +126,14 @@ namespace AdventureApp.Services
             return await adventureRepository.GetAdventure(id);
         }
 
-        public async Task<IEnumerable<Adventure>> GetAdventures()
-            {
-            var test = JsonSerializer.Serialize(dougnutAdventure);
+        public async Task<IEnumerable<AdventureDto>> GetAdventures()
+        {
             return await adventureRepository.GetAdventures();
+        }
+
+        public async Task<UserAdventure> SaveUserAdventure(int userId, int adventuerId, int questionId)
+        {
+            return await adventureRepository.SaveUserAdventure(userId, adventuerId, questionId);
         }
     }
 }

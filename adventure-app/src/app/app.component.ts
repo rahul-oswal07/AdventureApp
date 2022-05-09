@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { environment } from 'src/environments/environment';
 import { AdventureService } from './adventure.service';
 
 @Component({
@@ -8,5 +9,6 @@ import { AdventureService } from './adventure.service';
   providers:[AdventureService]
 })
 export class AppComponent {
+  userId = environment.userId;
   title = 'adventure-app';
 }

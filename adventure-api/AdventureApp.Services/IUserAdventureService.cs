@@ -1,6 +1,12 @@
-﻿namespace AdventureApp.Services
+﻿using AdventureApp.DataAccess.Entities;
+using AdventureApp.DataAccess.Models;
+
+namespace AdventureApp.Services
 {
-    internal interface IUserAdventureService
+    public interface IUserAdventureService
     {
+        Task<IEnumerable<UserAdventureDto>> GetUserAdventures(int userId);
+
+        Task<UserAdventureDto> GetUserAdventure(int userId, int adventureId);
     }
 }

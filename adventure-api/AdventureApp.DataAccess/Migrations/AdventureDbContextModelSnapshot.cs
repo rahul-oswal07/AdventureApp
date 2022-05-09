@@ -24,14 +24,13 @@ namespace AdventureApp.DataAccess.Migrations
 
             modelBuilder.Entity("AdventureApp.DataAccess.Entities.Adventure", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"), 1L, 1);
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("RootQuestionId")
@@ -56,7 +55,7 @@ namespace AdventureApp.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("QuestionId")
+                    b.Property<int?>("ParentQuestionId")
                         .HasColumnType("int");
 
                     b.Property<bool>("Value")
@@ -64,9 +63,54 @@ namespace AdventureApp.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("QuestionId");
+                    b.HasIndex("ParentQuestionId");
 
                     b.ToTable("Question");
+                });
+
+            modelBuilder.Entity("AdventureApp.DataAccess.Entities.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("User");
+                });
+
+            modelBuilder.Entity("AdventureApp.DataAccess.Entities.UserAdventure", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("AdventureId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("QuestionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AdventureId");
+
+                    b.HasIndex("QuestionId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserAdventure");
                 });
 
             modelBuilder.Entity("AdventureApp.DataAccess.Entities.Adventure", b =>
@@ -80,9 +124,38 @@ namespace AdventureApp.DataAccess.Migrations
 
             modelBuilder.Entity("AdventureApp.DataAccess.Entities.Question", b =>
                 {
-                    b.HasOne("AdventureApp.DataAccess.Entities.Question", null)
+                    b.HasOne("AdventureApp.DataAccess.Entities.Question", "ParentQuestion")
                         .WithMany("Questions")
-                        .HasForeignKey("QuestionId");
+                        .HasForeignKey("ParentQuestionId");
+
+                    b.Navigation("ParentQuestion");
+                });
+
+            modelBuilder.Entity("AdventureApp.DataAccess.Entities.UserAdventure", b =>
+                {
+                    b.HasOne("AdventureApp.DataAccess.Entities.Adventure", "Adventure")
+                        .WithMany()
+                        .HasForeignKey("AdventureId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AdventureApp.DataAccess.Entities.Question", "Question")
+                        .WithMany()
+                        .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AdventureApp.DataAccess.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Adventure");
+
+                    b.Navigation("Question");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("AdventureApp.DataAccess.Entities.Question", b =>
