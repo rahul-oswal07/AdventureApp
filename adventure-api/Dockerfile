@@ -1,4 +1,5 @@
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+
 WORKDIR /app
 EXPOSE 80
 ENV ASPNETCORE_ENVIRONMENT=Development
@@ -13,6 +14,9 @@ RUN dotnet restore "AdventureApp.Web/AdventureApp.Web.csproj"
 # COPY EVERYTHING ELSE
 COPY . .
 RUN dotnet build "AdventureApp.Web/AdventureApp.Web.csproj" -c Release -o /app
+
+# RUN UNIT TESTS
+RUN dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput="/coverage"
 
 FROM build AS publish
 RUN dotnet publish "AdventureApp.Web/AdventureApp.Web.csproj" -c Release -o /app

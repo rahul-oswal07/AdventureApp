@@ -7,9 +7,9 @@ namespace AdventureApp.DataAccess.Repositories
     {
         Task<IEnumerable<AdventureDto>> GetAdventures();
 
-        Task<Adventure> GetAdventure(int adventureId);
+        Task<AdventureDto> GetAdventure(int adventureId);
         
-        Task<Adventure> AddAdventure(Adventure adventure);
+        Task<AdventureDto> CreateAdventure(Adventure adventure);
 
     }
 }

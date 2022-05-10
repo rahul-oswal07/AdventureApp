@@ -74,7 +74,7 @@ namespace AdventureApp.DataAccess.Repositories
                 AdventureId = adventuerId
             });
 
-            int a = await adventureDbContext.SaveChangesAsync();
+            await adventureDbContext.SaveChangesAsync();
             return new UserAdventureDto { Id = result.Entity.Id, AdventureId = result.Entity.Id };
         }
 
@@ -91,7 +91,7 @@ namespace AdventureApp.DataAccess.Repositories
             {
                 foreach (var item in question.Questions)
                 {
-                    item.IsSelected = selectedQuestions.Any(t => t == item.Id);
+                    item.IsSelected = selectedQuestions.Any(id => id == item.Id);
                     UpdateQuestionsValue(item, selectedQuestions);
                 }
             }

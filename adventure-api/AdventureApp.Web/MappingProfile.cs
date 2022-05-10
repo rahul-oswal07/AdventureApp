@@ -10,8 +10,15 @@ namespace AdventureApp.Web
         {
             CreateMap<Question, QuestionDto>();
             CreateMap<QuestionDto, Question>();
+
+            CreateMap<CreateAdventureDto, Question>();
+            CreateMap<Question, CreateAdventureDto>();
+
             CreateMap<Adventure, AdventureDto>();
             CreateMap<AdventureDto, Adventure>();
+
+            CreateMap<CreateAdventureDto, Adventure>();
+            CreateMap<Adventure, CreateAdventureDto>();
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using AdventureApp.DataAccess.Entities;
 using AdventureApp.DataAccess.Models;
 using AdventureApp.DataAccess.Repositories;
+using AutoMapper;
 
 namespace AdventureApp.Services
 {
@@ -8,39 +9,39 @@ namespace AdventureApp.Services
     {
         #region Private Variables
 
-        private readonly IAdventureRepository adventureRepository;
+        public readonly IAdventureRepository adventureRepository;
+
+        public readonly IMapper mapper;
 
         #endregion
 
         #region Constructor
 
-        public AdventureService(IAdventureRepository adventureRepository)
+        public AdventureService(IMapper mapper, IAdventureRepository adventureRepository)
         {
             this.adventureRepository = adventureRepository;
+            this.mapper = mapper;
         }
 
         #endregion
 
         #region Public Methods
 
-        public async Task<bool> CreateAdventure(Adventure adventure)
+        public async Task<IEnumerable<AdventureDto>> GetAdventures()
         {
-            if (adventure == null)
-            {
-                throw new ArgumentNullException("Adventure cannot be null");
-            }
-            await adventureRepository.AddAdventure(adventure);
-            return true;
+            return await adventureRepository.GetAdventures();
         }
 
-        public async Task<Adventure> GetAdventureById(int id)
+        public async Task<AdventureDto> GetAdventureById(int id)
         {
             return await adventureRepository.GetAdventure(id);
         }
 
-        public async Task<IEnumerable<AdventureDto>> GetAdventures()
+        public async Task<AdventureDto> CreateAdventure(CreateAdventureDto adventureDto)
         {
-            return await adventureRepository.GetAdventures();
+            Adventure adventure = mapper.Map<Adventure>(adventureDto);
+            AdventureDto result = await adventureRepository.CreateAdventure(adventure);
+            return result;
         }
 
         #endregion

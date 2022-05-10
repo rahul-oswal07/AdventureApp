@@ -1,6 +1,5 @@
-using AdventureApp.DataAccess.Entities;
+using AdventureApp.DataAccess.Models;
 using AdventureApp.Services;
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AdventureApp.Web.Controllers
@@ -9,38 +8,35 @@ namespace AdventureApp.Web.Controllers
     [Route("api/adventures")]
     public class AdventureController : BaseController
     {
-        private readonly ILogger<AdventureController> _logger;
-        private readonly IAdventureService _adventureService;
+        public readonly IAdventureService _adventureService;
 
-        public AdventureController(ILogger<AdventureController> logger, IMapper mapper, IAdventureService adventureService)
+        public AdventureController(IAdventureService adventureService)
         {
-            _logger = logger;
             _adventureService = adventureService;
-            Mapper = mapper;
         }
 
         [HttpGet]
         [Route("")]
-        public async Task<IActionResult> Get()
+        public async Task<IEnumerable<AdventureDto>> Get()
         {
             var result = await _adventureService.GetAdventures();
-            return Ok(result);
+            return result;
         }
 
         [HttpGet]
         [Route("{id}")]
-        public async Task<Adventure> GetAdventureById(int id)
+        public async Task<AdventureDto> GetAdventureById(int id)
         {
-            Adventure result = await _adventureService.GetAdventureById(id);
+            AdventureDto result = await _adventureService.GetAdventureById(id);
             return result;
         }
 
         [HttpPost]
         [Route("create")]
-        public async Task<IActionResult> CreateAdventure(Adventure adventure)
+        public async Task<AdventureDto> CreateAdventure(CreateAdventureDto adventure)
         {
-            bool result = await _adventureService.CreateAdventure(adventure);
-            return Ok(result);
+            AdventureDto result = await _adventureService.CreateAdventure(adventure);
+            return result;
         }
     }
 }

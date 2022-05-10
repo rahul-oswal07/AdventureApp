@@ -40,9 +40,14 @@ namespace AdventureApp.DataAccess.Repositories
             return questionDto;
         }
 
-        public async Task<Question> GetQuestionById(int id)
+        public async Task<QuestionDto> GetQuestionById(int id)
         {
-            return await adventureDbContext.Question.SingleOrDefaultAsync(x => x.Id == id);
+            var result = await adventureDbContext.Question
+                .Where(question => question.Id == id)
+                .Select(question => new QuestionDto { Id = question.Id, Name = question.Name, Value = question.Value })
+                .FirstOrDefaultAsync();
+
+            return result;
         }
 
         #endregion

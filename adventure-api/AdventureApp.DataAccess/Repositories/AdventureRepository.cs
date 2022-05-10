@@ -1,5 +1,6 @@
 ﻿using AdventureApp.DataAccess.Entities;
 using AdventureApp.DataAccess.Models;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
 namespace AdventureApp.DataAccess.Repositories
@@ -8,35 +9,38 @@ namespace AdventureApp.DataAccess.Repositories
     {
         #region Private Variables
 
-        private readonly AdventureDbContext adventureDbContext;
+        public readonly AdventureDbContext adventureDbContext;
+
+        public readonly IMapper mapper;
 
         #endregion
 
         #region Constructor 
 
-        public AdventureRepository(AdventureDbContext adventureDbContext)
+        public AdventureRepository(IMapper mapper, AdventureDbContext adventureDbContext)
         {
             this.adventureDbContext = adventureDbContext;
+            this.mapper = mapper;
         }
 
         #endregion
 
         #region Public methods
 
-        public async Task<Adventure> AddAdventure(Adventure adventure)
+        public async Task<AdventureDto> CreateAdventure(Adventure adventure)
         {
             var result = await adventureDbContext.Adventure.AddAsync(adventure);
             await adventureDbContext.SaveChangesAsync();
-            return result.Entity;
+            return mapper.Map<AdventureDto>(result.Entity);
         }
 
-        public async Task<Adventure> GetAdventure(int adventureId)
+        public async Task<AdventureDto> GetAdventure(int adventureId)
         {
             Adventure adventure = await adventureDbContext.Adventure.Where(item => item.Id == adventureId)
                 .Include(item => item.RootQuestion)
                 .SingleOrDefaultAsync();
 
-            return adventure;
+            return mapper.Map<AdventureDto>(adventure);
         }
 
         public async Task<IEnumerable<AdventureDto>> GetAdventures()
@@ -48,8 +52,6 @@ namespace AdventureApp.DataAccess.Repositories
                 RootQuestionId = item.RootQuestionId
             }).ToListAsync();
         }
-
-        
 
         #endregion
 

@@ -28,7 +28,7 @@ namespace AdventureApp.Services
             return await _questionRepository.GetNextQuestion(id, value);
         }
 
-        public async Task<Question> GetQuestionById(int id)
+        public async Task<QuestionDto> GetQuestionById(int id)
         {
             return await _questionRepository.GetQuestionById(id);
         }

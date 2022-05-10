@@ -7,5 +7,7 @@
         public string? Name { get; set; }
 
         public int? RootQuestionId { get; set; }
+
+        public QuestionDto? RootQuestion { get; set; }
     }
 }
