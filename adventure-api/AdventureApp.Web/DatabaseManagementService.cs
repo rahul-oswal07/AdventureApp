@@ -12,7 +12,7 @@ namespace AdventureApp.Web
             {
                 // Takes all of our migrations files and apply them against the database in case they are not implemented
                 var context = serviceScope.ServiceProvider.GetService<AdventureDbContext>();
-
+                context.Database.Migrate();
             }
         }
     }
