@@ -1,78 +1,88 @@
-using AdventureApp.DataAccess;
-using AdventureApp.DataAccess.Entities;
 using AdventureApp.DataAccess.Models;
 using AdventureApp.DataAccess.Repositories;
 using AdventureApp.Services;
-using AdventureApp.Web;
-using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
 namespace AdventureApp.ServiceTests
 {
-    public class AdventureServiceTest : IDisposable
+    public class AdventureServiceTest : AdventureServiceTestData
     {
         private IAdventureService _service;
-        private AdventureDbContext _dbContext;
 
-        public AdventureServiceTest()
+        public AdventureServiceTest() : base("adventureService")
         {
-            var options = new DbContextOptionsBuilder<AdventureDbContext>()
-                .UseInMemoryDatabase(databaseName: "AdventureDB")
-                .Options;
-
-            var config = new MapperConfiguration(opts =>
-            {
-                opts.AddProfile(new MappingProfile());
-            });
-            IMapper mapper = config.CreateMapper();
-            _dbContext = new AdventureDbContext(options);
-            AdventureRepository adventureRepository = new AdventureRepository(mapper, _dbContext);
-            _service = new AdventureService(mapper, adventureRepository);
-
+            AdventureRepository adventureRepository = new AdventureRepository(Mapper, AdventureDbContext);
+            _service = new AdventureService(Mapper, adventureRepository);
         }
-
-        public void Dispose()
-        {
-            _dbContext.Dispose();
-        }
-
 
         /// <summary>
         /// Given: I am a user and want to load all the adventures
         /// When: There are adventures
-        /// Then: It should return a result of adventure list
+        /// Then: It should return adventure list
         /// </summary>
         [Fact]
-        public void Get_ReturnsListOfAllAdventures()
+        public void GetAdventures_ReturnsListOfAllAdventures()
         {
-
-            Question question = new Question() { Name = "Question 1" };
-            Question question2 = new Question() { Name = "Question 2" };
-            Question question3 = new Question() { Name = "Question 3", };
-
             // Arrange
-            IEnumerable<Adventure> adventures = new List<Adventure>()
-            {
-                new Adventure() {Name="Test Adventure",RootQuestion =question },
-                new Adventure() {Name="Test Adventure 2",RootQuestion = question2},
-                new Adventure() {Name="Test Adventure 3",RootQuestion = question3}
-            };
-
-            _dbContext.Adventure.AddRange(adventures);
-            _dbContext.SaveChanges();
+            GetAdventures_ReturnsListOfAllAdventures_TestData();
 
             // Act 
             var actualAdventures = _service.GetAdventures().Result;
 
+            AdventureDto actualAdventure = actualAdventures
+                .Where(item => item.Name == Test01_Adventure.Name)
+                .FirstOrDefault();
+
             // Assert
             Assert.IsAssignableFrom<IEnumerable<AdventureDto>>(actualAdventures);
-            Assert.Equal(actualAdventures.Count(), adventures.Count());
-            Assert.Equal(actualAdventures.First().RootQuestionId, question.Id);
-            Assert.Equal(actualAdventures.First().Name, adventures.First().Name);
+            Assert.NotNull(actualAdventure);
+            Assert.Equal(actualAdventure.RootQuestionId, Test01_Question.Id);
+        }
+
+        /// <summary>
+        /// Given: I am a user and want to a adventure specified by adventure id
+        /// When: There are adventures
+        /// Then: It should return a adventure
+        /// </summary>
+        [Fact]
+        public void GetAdventureById_ReturnsAdventure()
+        {
+            // Arrange
+            GetAdventureById_ReturnsAdventure_TestData();
+
+            // Act 
+            var actualAdventure = _service.GetAdventureById(Test02_Adventure.Id).Result;
+
+            // Assert
+            Assert.NotNull(actualAdventure);
+            Assert.IsAssignableFrom<AdventureDto>(actualAdventure);
+            Assert.Equal(Test02_Adventure.Name, actualAdventure.Name);
+            Assert.Equal(Test02_Adventure.RootQuestionId, actualAdventure.RootQuestionId);
+            Assert.Equal(Test02_Adventure.RootQuestion.Name, actualAdventure.RootQuestion.Name);
+        }
+
+        /// <summary>
+        /// Given: I am a user and want to create an adventure
+        /// When: I am passing all the required information
+        /// Then: It should create a adventure and return it
+        /// </summary>
+        [Fact]
+        public void CreateAdventure_Success()
+        {
+            // Arrange
+            CreateAdventure_Success_TestData();
+
+            // Act 
+            var actualAdventure = _service.CreateAdventure(Test03_CreataAdventureDto).Result;
+
+            // Assert
+            Assert.NotNull(actualAdventure);
+            Assert.IsAssignableFrom<AdventureDto>(actualAdventure);
+            Assert.Equal(actualAdventure.Name, Test03_CreataAdventureDto.Name);
+            Assert.Equal(actualAdventure.RootQuestion.Name, Test03_CreataAdventureDto.RootQuestion.Name);
+            Assert.Equal(actualAdventure.RootQuestion.Questions.Count(), Test03_CreataAdventureDto.RootQuestion.Questions.Count());
         }
     }
 }

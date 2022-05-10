@@ -8,6 +8,6 @@ namespace AdventureApp.DataAccess.Repositories
 
         Task<IEnumerable<UserAdventureDto>> GetUserAdventures(int userId);
 
-        Task<UserAdventureDto> SaveUserAdventure(int userId, int adventuerId, int questionId);
+        Task<UserAdventureDto> AddUserAdventure(CreateUserAdventureDto createAdventureDto);
     }
 }

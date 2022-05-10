@@ -8,6 +8,6 @@ namespace AdventureApp.Services
 
         Task<UserAdventureDto> GetUserAdventure(int id);
 
-        Task<UserAdventureDto> SaveUserAdventure(int userId, int adventuerId, int questionId);
+        Task<UserAdventureDto> SaveUserAdventure(CreateUserAdventureDto createUserAdventureDto);
     }
 }

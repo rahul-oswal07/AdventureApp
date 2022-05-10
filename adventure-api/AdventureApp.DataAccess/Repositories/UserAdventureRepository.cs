@@ -1,6 +1,5 @@
 ﻿using AdventureApp.DataAccess.Entities;
 using AdventureApp.DataAccess.Models;
-using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
 namespace AdventureApp.DataAccess.Repositories
@@ -10,16 +9,13 @@ namespace AdventureApp.DataAccess.Repositories
         #region Private Fields
 
         private readonly AdventureDbContext adventureDbContext;
-        private readonly IMapper mapper;
-
+        
         #endregion
 
         #region Public Constructor
-        public UserAdventureRepository(AdventureDbContext adventureDbContext, IMapper mapper)
+        public UserAdventureRepository(AdventureDbContext adventureDbContext)
         {
             this.adventureDbContext = adventureDbContext;
-            this.mapper = mapper;
-
         }
 
         #endregion
@@ -33,24 +29,13 @@ namespace AdventureApp.DataAccess.Repositories
                 .Include(item => item.Adventure)
                 .FirstOrDefault();
 
-            Question question = adventureDbContext.Question.AsEnumerable()
-                .Where(x => x.Id == userAdventure.QuestionId)
-                .FirstOrDefault();
-            IEnumerable<int> selectedQuestions = GetAllSelectedQuestionIds(question);
-
-            var result = adventureDbContext.Question.ToList()
-                .Where(item => item.Id == userAdventure.Adventure.RootQuestionId)
-                .FirstOrDefault();
-
-            QuestionDto questionDto = mapper.Map<QuestionDto>(result);
-            questionDto.IsSelected = selectedQuestions.Any(item => item == result.Id);
-            UpdateQuestionsValue(questionDto, selectedQuestions);
-
             return new UserAdventureDto
             {
                 Name = userAdventure.Adventure.Name,
-                Question = questionDto
+                LeafQuestionId = userAdventure.QuestionId,
+                RootQuestionId = userAdventure.Adventure.RootQuestionId
             };
+
         }
 
         public async Task<IEnumerable<UserAdventureDto>> GetUserAdventures(int userId)
@@ -65,13 +50,14 @@ namespace AdventureApp.DataAccess.Repositories
                 }).ToListAsync();
         }
 
-        public async Task<UserAdventureDto> SaveUserAdventure(int userId, int adventuerId, int questionId)
+        public async Task<UserAdventureDto> AddUserAdventure(CreateUserAdventureDto createAdventureDto)
         {
+            CreateUserIfNotExist(adventureDbContext);
             var result = await adventureDbContext.UserAdventure.AddAsync(new UserAdventure
             {
-                UserId = userId,
-                QuestionId = questionId,
-                AdventureId = adventuerId
+                UserId = createAdventureDto.UserId,
+                QuestionId = createAdventureDto.QuestionId,
+                AdventureId = createAdventureDto.AdventureId
             });
 
             await adventureDbContext.SaveChangesAsync();
@@ -97,18 +83,19 @@ namespace AdventureApp.DataAccess.Repositories
             }
         }
 
-        private IEnumerable<int> GetAllSelectedQuestionIds(Question? question)
-        {
-            List<int> selectedQuestionIds = new List<int>();
-            Question currentQuestion = question;
-            selectedQuestionIds.Add(currentQuestion.Id);
-            while (currentQuestion?.ParentQuestionId != null)
-            {
-                selectedQuestionIds.Add(currentQuestion.ParentQuestionId.Value);
-                currentQuestion = currentQuestion?.ParentQuestion;
-            }
 
-            return selectedQuestionIds;
+        /// <summary>
+        /// Note: this is a temporary method since there is no user creation
+        /// mechanism
+        /// </summary>
+        /// <param name="context">AdventureDbContext</param>
+        private void CreateUserIfNotExist(AdventureDbContext context)
+        {
+            if (!context.User.Any())
+            {
+                context.User.Add(new User { Name = "Rahul" });
+                context.SaveChanges();
+            }
         }
 
         #endregion

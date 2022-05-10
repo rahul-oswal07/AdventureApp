@@ -40,10 +40,10 @@ namespace AdventureApp.Web.Controllers
         }
 
         [HttpPost]
-        [Route("create")]
-        public async Task<UserAdventureDto> SaveUserAdventure(SaveAdventureParameter parameter)
+        [Route("")]
+        public async Task<UserAdventureDto> SaveUserAdventure(CreateUserAdventureDto createUserAdventureDto)
         {
-            UserAdventureDto result = await userAdventureService.SaveUserAdventure(parameter.UserId, parameter.AdventureId, parameter.QuestionId);
+            UserAdventureDto result = await userAdventureService.SaveUserAdventure(createUserAdventureDto);
             return result;
         }
 

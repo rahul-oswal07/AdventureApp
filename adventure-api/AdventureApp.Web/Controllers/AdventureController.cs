@@ -32,7 +32,7 @@ namespace AdventureApp.Web.Controllers
         }
 
         [HttpPost]
-        [Route("create")]
+        [Route("")]
         public async Task<AdventureDto> CreateAdventure(CreateAdventureDto adventure)
         {
             AdventureDto result = await _adventureService.CreateAdventure(adventure);

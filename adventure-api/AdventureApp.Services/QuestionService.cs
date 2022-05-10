@@ -1,6 +1,7 @@
 ﻿using AdventureApp.DataAccess.Entities;
 using AdventureApp.DataAccess.Models;
 using AdventureApp.DataAccess.Repositories;
+using AutoMapper;
 
 namespace AdventureApp.Services
 {
@@ -9,14 +10,16 @@ namespace AdventureApp.Services
         #region Private Methods
 
         private readonly IQuestionRepository _questionRepository;
+        private readonly IMapper mapper;
 
         #endregion
 
         #region Constructor 
 
-        public QuestionService(IQuestionRepository questionRepository)
+        public QuestionService(IQuestionRepository questionRepository, IMapper mapper)
         {
             _questionRepository = questionRepository;
+            this.mapper = mapper;
         }
 
         #endregion
@@ -30,7 +33,8 @@ namespace AdventureApp.Services
 
         public async Task<QuestionDto> GetQuestionById(int id)
         {
-            return await _questionRepository.GetQuestionById(id);
+            var result = await _questionRepository.GetQuestionById(id);
+            return mapper.Map<QuestionDto>(result);
         }
 
         #endregion

@@ -19,7 +19,7 @@ export class AdventureService {
       createAdventure(adventure:Adventure) {
         const headers = { 'content-type': 'application/json'}  
         const body=JSON.stringify(adventure);
-        return this.http.post<boolean>( environment.apiEndPoint +'/adventures/create', body,{'headers':headers})
+        return this.http.post<boolean>( environment.apiEndPoint +'/adventures', body,{'headers':headers})
       }
 
       public getNextQuestion(id:any, value:boolean) {
@@ -31,7 +31,7 @@ export class AdventureService {
         const body=JSON.stringify({
           questionId: questionId, userId: userId, adventureId:adventureId
         });
-        return this.http.post<any>( environment.apiEndPoint +'/userAdventures/create',body,{'headers':headers});
+        return this.http.post<any>( environment.apiEndPoint +'/userAdventures',body,{'headers':headers});
       }
 
 }
