@@ -9,7 +9,7 @@ namespace AdventureApp.DataAccess.Repositories
         #region Private Fields
 
         private readonly AdventureDbContext adventureDbContext;
-        
+
         #endregion
 
         #region Public Constructor
@@ -32,6 +32,7 @@ namespace AdventureApp.DataAccess.Repositories
             return new UserAdventureDto
             {
                 Name = userAdventure.Adventure.Name,
+                AdventureId = userAdventure.Adventure.Id,
                 LeafQuestionId = userAdventure.QuestionId,
                 RootQuestionId = userAdventure.Adventure.RootQuestionId
             };
@@ -52,7 +53,7 @@ namespace AdventureApp.DataAccess.Repositories
 
         public async Task<UserAdventureDto> AddUserAdventure(CreateUserAdventureDto createAdventureDto)
         {
-            CreateUserIfNotExist(adventureDbContext);
+            CreateUserIfNotExist(adventureDbContext); // Note: this is temp line, can be removed once the user implementation is done
             var result = await adventureDbContext.UserAdventure.AddAsync(new UserAdventure
             {
                 UserId = createAdventureDto.UserId,

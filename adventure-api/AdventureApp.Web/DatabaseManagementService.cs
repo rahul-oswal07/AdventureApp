@@ -8,11 +8,15 @@ namespace AdventureApp.Web
         // Getting the scope of our database context
         public static void MigrationInitialisation(IApplicationBuilder app)
         {
-            using (var serviceScope = app.ApplicationServices.CreateScope())
+            using (var scope = app.ApplicationServices.CreateScope())
             {
-                // Takes all of our migrations files and apply them against the database in case they are not implemented
-                var context = serviceScope.ServiceProvider.GetService<AdventureDbContext>();
-                context.Database.Migrate();
+                var services = scope.ServiceProvider;
+
+                var context = services.GetRequiredService<AdventureDbContext>();
+                if (context.Database.GetPendingMigrations().Any())
+                {
+                    context.Database.Migrate();
+                }
             }
         }
     }
