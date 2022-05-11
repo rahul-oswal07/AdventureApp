@@ -46,7 +46,8 @@ namespace AdventureApp.ServiceTests
             Question question = new Question()
             {
                 Name = name ?? "Test title" + guid,
-                ParentQuestion = parentQuestion ?? null
+                ParentQuestion = parentQuestion ?? null,
+                Value = value ?? false
             };
 
             return question;
@@ -61,8 +62,8 @@ namespace AdventureApp.ServiceTests
                 ParentQuestion = parentQuestion ?? null,
                 Questions = new List<Question>
                 {
-                    CreateQuestion(),
-                    CreateQuestion()
+                    CreateQuestion(value:true),
+                    CreateQuestion(value:false)
                 }
             };
 

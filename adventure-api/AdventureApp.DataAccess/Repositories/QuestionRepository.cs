@@ -26,16 +26,17 @@ namespace AdventureApp.DataAccess.Repositories
         public async Task<QuestionDto> GetNextQuestion(int id, bool selectedValue)
         {
             Question result = await adventureDbContext.Question
-                .Where(x => x.Id == id)
-                .Include(item => item.Questions)
+                .Where(question => question.Id == id)
+                .Include(question => question.Questions)
                 .FirstOrDefaultAsync();
 
             var questionDto = result.Questions.Where(x => x.Value == selectedValue)
-            .Select(item => new QuestionDto()
+            .Select(question => new QuestionDto()
             {
-                Id = item.Id,
-                Name = item.Name,
-                Questions = item.Questions?.Select(x => new QuestionDto() { Id = x.Id, Name = x.Name })
+                Id = question.Id,
+                Name = question.Name,
+                Value = question.Value,
+                Questions = question.Questions?.Select(x => new QuestionDto() { Id = x.Id, Name = x.Name, Value = x.Value })
             }).FirstOrDefault();
             return questionDto;
         }
