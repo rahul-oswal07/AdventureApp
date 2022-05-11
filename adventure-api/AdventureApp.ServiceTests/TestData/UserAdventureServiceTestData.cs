@@ -10,22 +10,23 @@ namespace AdventureApp.ServiceTests
         {
         }
 
-        internal IEnumerable<Adventure> Test01_AdventureList;
+        internal UserAdventureDto Test01_UserAdventureDto;
         internal Adventure Test01_Adventure;
         internal Question Test01_Question;
+        internal User Test01_User;
 
-        internal void GetAdventures_ReturnsListOfAllAdventures_TestData()
+        internal void GetAdventures_ReturnsListOfAllUserAdventures_TestData()
         {
+            Test01_Adventure = CreateAdventure();
             Test01_Question = CreateQuestion();
+            Test01_User = CreateUser();
+            UserAdventure userAdventure = CreateUserAdventure(Test01_Adventure, Test01_User, Test01_Question);
+            UserAdventure userAdventure2 = CreateUserAdventure();
+            UserAdventure userAdventure3 = CreateUserAdventure(user: Test01_User);
 
-            Adventure adventure = CreateAdventure("Test1");
-            Adventure adventure2 = CreateAdventure("Test2");
-            Test01_Adventure = CreateAdventure("Test3", Test01_Question);
-            Adventure adventure4 = CreateAdventure("Test4");
+            IEnumerable<UserAdventure> userAdventures = new List<UserAdventure> { userAdventure, userAdventure2, userAdventure3 };
 
-            Test01_AdventureList = new List<Adventure> { adventure, adventure2, Test01_Adventure, adventure4 };
-
-            AdventureDbContext.Adventure.AddRange(Test01_AdventureList);
+            AdventureDbContext.UserAdventure.AddRange(userAdventures);
             AdventureDbContext.SaveChanges();
         }
     }

@@ -69,5 +69,29 @@ namespace AdventureApp.ServiceTests
 
             return question;
         }
+
+        public UserAdventure CreateUserAdventure(Adventure? adventure = null, User? user = null, Question? question = null)
+        {
+            string guid = Guid.NewGuid().ToString();
+            UserAdventure userAdventure = new UserAdventure()
+            {
+                Question = question ?? CreateQuestion(),
+                Adventure = adventure ?? CreateAdventure(),
+                User = user ?? CreateUser()
+            };
+
+            return userAdventure;
+        }
+
+        public User CreateUser(string? name = null)
+        {
+            string guid = Guid.NewGuid().ToString();
+            User user = new User()
+            {
+                Name = name ?? "User" + guid
+            };
+
+            return user;
+        }
     }
 }
