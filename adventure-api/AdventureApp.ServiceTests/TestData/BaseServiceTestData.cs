@@ -5,6 +5,7 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace AdventureApp.ServiceTests
 {
@@ -46,21 +47,19 @@ namespace AdventureApp.ServiceTests
             Question question = new Question()
             {
                 Name = name ?? "Test title" + guid,
-                ParentQuestion = parentQuestion ?? null,
                 Value = value ?? false
             };
 
             return question;
         }
 
-        public Question CreateQuestionWithChildQuestions(string name = null, bool? value = null, Question? parentQuestion = null)
+        public Question CreateQuestionWithChildQuestions(string name = null, bool? value = null, IEnumerable<Question>? questions = null)
         {
             string guid = Guid.NewGuid().ToString();
             Question question = new Question()
             {
                 Name = name ?? "Test title" + guid,
-                ParentQuestion = parentQuestion ?? null,
-                Questions = new List<Question>
+                Questions = questions != null ? questions.ToList() : new List<Question>
                 {
                     CreateQuestion(value:true),
                     CreateQuestion(value:false)
